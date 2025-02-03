@@ -7,12 +7,13 @@ Original file is located at
     https://colab.research.google.com/notebooks/empty.ipynb
 """
 
+import os
 import telebot
 from flask import Flask, request
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
 
-# Replace with your bot token
-TOKEN = '7713104021:AAGrN-RzrwSZ4DkmUOgbEjNlfheda6aqZvE'
+
+TOKEN = os.getenv("TOKEN")
 WEBHOOK_URL = 'https://your-koyeb-app-url/SecretTalker_bot'  # Update this URL after deploying on Koyeb
 
 bot = telebot.TeleBot(TOKEN)
@@ -53,7 +54,7 @@ def start(message):
 def show_admin_selection(chat_id):
     markup = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
     for admin in ADMINS.keys():
-        markup.add(KeyboardButton(admin))  # Use KeyboardButton instead of InlineKeyboardButton
+        markup.add(KeyboardButton(admin))  
     bot.send_message(chat_id, "یک مدیر را برای ارسال پیام انتخاب کنید ✨😊", reply_markup=markup)
 
 # Handle admin selection
