@@ -13,7 +13,7 @@ from telebot.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemo
 
 # Replace with your bot token
 TOKEN = '7713104021:AAGrN-RzrwSZ4DkmUOgbEjNlfheda6aqZvE'
-WEBHOOK_URL = 'https://your-koyeb-app-url/SecretTalker_bot'  # Update this URL after deploying on Koyeb
+WEBHOOK_URL = 'fashionable-leodora-blackforest-29005d4b.koyeb.app/'  # Update this URL after deploying on Koyeb
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -79,4 +79,4 @@ bot.set_webhook(url=WEBHOOK_URL)
 
 # Run Flask server
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=8000)
