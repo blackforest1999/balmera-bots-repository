@@ -14,7 +14,7 @@ from telebot.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemo
 
 
 TOKEN = os.getenv("7713104021:AAGrN-RzrwSZ4DkmUOgbEjNlfheda6aqZvE")
-WEBHOOK_URL = 'https://your-koyeb-app-url/SecretTalker_bot'  # Update this URL after deploying on Koyeb
+WEBHOOK_URL = 'https://brilliant-shauna-blackforest-6476e40f.koyeb.app/'  # Update this URL after deploying on Koyeb
 
 bot = telebot.TeleBot(TOKEN)
 
