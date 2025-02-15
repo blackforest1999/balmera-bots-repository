@@ -1,4 +1,3 @@
-
 import time
 import telebot
 from flask import Flask, request
@@ -55,16 +54,33 @@ def select_admin(message):
     user_admin_selection[message.chat.id] = ADMINS[message.text]
     bot.send_message(message.chat.id, "پیام ناشناس خود را ارسال کنید 📩🤍", reply_markup=ReplyKeyboardRemove())
 
-# Forward message to admin
-@bot.message_handler(func=lambda message: message.chat.id in user_admin_selection)
+# Forward all types of messages to admin
+@bot.message_handler(content_types=['text', 'photo', 'video', 'audio', 'document', 'voice', 'sticker', 'animation'])
 def forward_message(message):
-    admin_id = user_admin_selection[message.chat.id]
-    user_mention = f"@{message.from_user.username}" if message.from_user.username else f"ID: {message.from_user.id}"
-    bot.send_message(admin_id, f"🔹 پیام از  {user_mention}:")
-    bot.send_message(admin_id, message.text)
-
-    bot.send_message(message.chat.id, "پیام شما ارسال شد ✅😊")
-    show_admin_selection(message.chat.id)
+    if message.chat.id in user_admin_selection:
+        admin_id = user_admin_selection[message.chat.id]
+        user_mention = f"@{message.from_user.username}" if message.from_user.username else f"ID: {message.from_user.id}"
+        bot.send_message(admin_id, f"🔹 پیام از  {user_mention}:")
+        
+        if message.text:
+            bot.send_message(admin_id, message.text)
+        elif message.photo:
+            bot.send_photo(admin_id, message.photo[-1].file_id, caption=message.caption)
+        elif message.video:
+            bot.send_video(admin_id, message.video.file_id, caption=message.caption)
+        elif message.audio:
+            bot.send_audio(admin_id, message.audio.file_id, caption=message.caption)
+        elif message.document:
+            bot.send_document(admin_id, message.document.file_id, caption=message.caption)
+        elif message.voice:
+            bot.send_voice(admin_id, message.voice.file_id)
+        elif message.sticker:
+            bot.send_sticker(admin_id, message.sticker.file_id)
+        elif message.animation:
+            bot.send_animation(admin_id, message.animation.file_id, caption=message.caption)
+        
+        bot.send_message(message.chat.id, "پیام شما ارسال شد ✅😊")
+        show_admin_selection(message.chat.id)
 
 # Set webhook
 bot.remove_webhook()
