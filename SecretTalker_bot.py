@@ -1,11 +1,15 @@
+import os
 import time
 import telebot
 from flask import Flask, request
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
 
-# Replace with your bot token
-TOKEN = '7713104021:AAGrN-RzrwSZ4DkmUOgbEjNlfheda6aqZvE'
-WEBHOOK_URL = 'https://fashionable-leodora-blackforest-29005d4b.koyeb.app/SecretTalker_bot'
+# Load environment variables
+TOKEN = os.getenv("BOT_TOKEN")  # Set this in Railway/Fly.io/Koyeb
+WEBHOOK_URL = os.getenv("WEBHOOK_URL")  # Set this to your deployed app's URL
+
+if not TOKEN or not WEBHOOK_URL:
+    raise ValueError("BOT_TOKEN and WEBHOOK_URL must be set as environment variables!")
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -24,7 +28,7 @@ user_started = set()
 app = Flask(__name__)
 
 # Webhook handler
-@app.route('/SecretTalker_bot', methods=['POST'])
+@app.route(f'/{TOKEN}', methods=['POST'])
 def webhook():
     json_str = request.get_data().decode('UTF-8')
     update = telebot.types.Update.de_json(json_str)
@@ -45,7 +49,7 @@ def start(message):
 def show_admin_selection(chat_id):
     markup = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
     for admin in ADMINS.keys():
-        markup.add(KeyboardButton(admin))  # Use KeyboardButton instead of InlineKeyboardButton
+        markup.add(KeyboardButton(admin))
     bot.send_message(chat_id, "یک مدیر را برای ارسال پیام انتخاب کنید ✨😊", reply_markup=markup)
 
 # Handle admin selection
@@ -54,7 +58,7 @@ def select_admin(message):
     user_admin_selection[message.chat.id] = ADMINS[message.text]
     bot.send_message(message.chat.id, "پیام ناشناس خود را ارسال کنید 📩🤍", reply_markup=ReplyKeyboardRemove())
 
-# Forward all types of messages to admin
+# Forward messages to admin
 @bot.message_handler(content_types=['text', 'photo', 'video', 'audio', 'document', 'voice', 'sticker', 'animation'])
 def forward_message(message):
     if message.chat.id in user_admin_selection:
@@ -82,11 +86,13 @@ def forward_message(message):
         bot.send_message(message.chat.id, "پیام شما ارسال شد ✅😊")
         show_admin_selection(message.chat.id)
 
-# Set webhook
-bot.remove_webhook()
-time.sleep(1)  # Sleep to avoid hitting rate limits
-bot.set_webhook(url=WEBHOOK_URL)
+# Remove and set webhook on startup
+@app.before_first_request
+def setup_webhook():
+    bot.remove_webhook()
+    time.sleep(1)
+    bot.set_webhook(url=f"{WEBHOOK_URL}/{TOKEN}")
 
 # Run Flask server
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 8000)))
