@@ -1,5 +1,5 @@
-{
-  "numbers": [
+numbers= [
+    { "ch": "0", "position": [100, 90], "size": [40, 40] },
     { "ch": "1", "position": [100, 30], "size": [40, 115] },
     { "ch": "2", "position": [100, 30], "size": [60, 115] },
     { "ch": "3", "position": [100, 30], "size": [60, 115] },
@@ -9,9 +9,9 @@
     { "ch": "7", "position": [100, 30], "size": [60, 115] },
     { "ch": "8", "position": [100, 30], "size": [60, 115] },
     { "ch": "9", "position": [100, 30], "size": [60, 115] }
-  ],
+  ]
 
-  "mini_numbers": [
+mini_numbers= [
     { "ch": "0", "position": [100, 90], "size": [40, 40] },
     { "ch": "1", "position": [100, 50], "size": [40, 100] },
     { "ch": "2", "position": [100, 50], "size": [57, 100] },
@@ -22,9 +22,9 @@
     { "ch": "7", "position": [100, 50], "size": [57, 100] },
     { "ch": "8", "position": [100, 50], "size": [57, 100] },
     { "ch": "9", "position": [100, 50], "size": [57, 100] }
-  ],
+  ]
 
-  "chars": [
+chars= [
     { "ch": "B", "position": [260, 50], "size": [110, 90] },
     { "ch": "N", "position": [265, 35], "size": [100, 100] },
     { "ch": "H", "position": [275, 50], "size": [80, 80] },
@@ -39,4 +39,3 @@
     { "ch": "Y", "position": [270, 40], "size": [90, 100] },
     { "ch": "L", "position": [275, 35], "size": [70, 110] }
   ]
-}
